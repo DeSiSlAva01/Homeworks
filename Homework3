@@ -1,0 +1,115 @@
+#Problem 1
+a=0
+FactorialFunction<-function(Inputnumber){
+  if(Inputnumber==0){
+    Result<-1
+  } else {
+    Result<- Inputnumber
+    while(Inputnumber>1){
+      Result<-(Inputnumber-1)*Result
+      Inputnumber<-Inputnumber-1
+    }
+      
+  }
+  return (Result)
+}
+FactorialFunction (a)
+
+#Problem 2
+v<-c(1,4,6,7)
+
+sdf<-function(InputVector) {
+  avg=sum(InputVector)/length(InputVector)
+  SumDiff<- sum((InputVector-avg)^2)
+  FinalRes<-sqrt(sum((InputVector-avg)^2)/(length(InputVector)-1))
+  return(FinalRes)
+}
+sdf(v)
+sd(v)
+
+#Problem 4
+library(nycflights13)
+library(dplyr)
+library(tidyverse)
+library(tidyquant)
+flights
+data<-flights
+not_cancelled<-flights %>%
+  filter(!is.na(air_time))
+
+#4.1
+a<-not_cancelled %>%
+  group_by(carrier,dest) %>%
+  select(carrier,dest) %>%
+  summarise(NrFlights=n()) %>%
+  arrange(desc(NrFlights)) %>%
+  slice_head()''
+
+#4.2
+a<-not_cancelled %>%
+  group_by(carrier) %>%
+  summarise(most=max(arr_delay, na.rm=TRUE)) %>%
+  ungroup()
+view(a)
+
+#4.3
+
+b<-not_cancelled %>%
+  group_by(tailnum)%>%
+  summarise(Totaldist=sum(distance)) %>%
+ arrange(desc(Totaldist)) %>%
+ slice(1:3, (n()-2):n()) %>%
+  ungroup()
+view(b)
+
+#4.4
+
+d<- not_cancelled %>%
+  filter(year==2013, month==2, !is.na(dep_time)) %>%
+  arrange(day, dep_time) %>%
+  group_by(day) %>%
+  filter(row_number()==1 | row_number()==n()) %>%
+ungroup()
+view(d) 
+  
+
+#4.5
+ f<-not_cancelled %>%
+   filter(year==2013, month==3) %>%
+   group_by(carrier) %>%
+   summarise(Totaldist=sum(distance)) %>%
+   arrange(desc(Totaldist)) %>%
+   slice(1,n())
+ ungroup()
+ view(f)
+
+#4.6
+ 
+delayy<-not_cancelled %>%
+   group_by(month) %>%
+   summarise (delayss=sum(arr_delay>60)) %>% 
+   arrange(desc(delayss)) %>%
+  slice(1)
+ungroup()
+ view(delayy)
+   
+#4.7
+
+m<- not_cancelled %>%
+  summarise(diff=mean(dep_time-lag(dep_time), na.rm=TRUE)) # i searched on the internet and found the function diff (i forgot about it the previous time)
+  view(m)
+ 
+#4.8
+  
+ sdf<-function(InputVector) {
+    avg=sum(InputVector)/length(InputVector)
+    SumDiff<- sum((InputVector-avg)^2)
+    FinalRes<-sqrt(sum((InputVector-avg)^2)/(length(InputVector)-1))
+    return(FinalRes)
+  }
+  
+ s<-not_cancelled %>%
+   group_by(month,dest) %>%
+ summarise(StandardDEV=sdf(dep_delay)) %>%
+   ungroup()
+ view(s)
