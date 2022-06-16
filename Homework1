@@ -1,0 +1,47 @@
+#Homework20220310.R
+#Problem1
+for (i in 1:10) {
+  print(i*3)
+}
+#Problem2
+for(i in rnorm(10)) {
+  if (i>1)
+    print (i)
+  else
+    print ("It is lower than 1")
+}
+#Problem3
+males-1
+females-0
+Allpeople-14
+
+d <- c(rep("men", 6), rep("women",8))
+ResultVector <- NULL
+for (a in 1:1000){
+  choose <- sample(d, size = 5, replace = FALSE)
+  if(sum(choose=="men")==3){
+    ResultVector<-c(ResultVector,1)
+  } else{
+    ResultVector<-c(ResultVector,0)
+  }
+  
+}
+sum(ResultVector)/1000
+dhyper(3,6,8,5,log=TRUE)
+
+#Problem4
+profit <- 0
+
+for(k in 1:1000){
+  
+  price <- 100
+  
+  for (x in 1:100){
+    price <- price + rnorm(1, mean = 0, sd = 7)
+  }
+  
+  if(price >= 120){
+    profit <- profit + (price - 120)
+  }
+}
+print(profit/1000)
