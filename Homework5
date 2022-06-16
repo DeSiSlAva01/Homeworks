@@ -1,0 +1,40 @@
+#Homework20220428.R
+
+#Problem1
+library(quantmod)
+library(base)
+
+
+#Problem2
+
+n<- 1:100
+primenum <- for(k in n){
+  for(l in 1:k){
+    if(k%%l== 0) {
+      print(k, l)
+    }
+  }
+}
+
+#Problem3
+library(tidyquant)
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+
+data <- tq_get("TSLA",from = ymd("2012-01-03"),
+                          to = ymd("2022-05-16"))%>%
+  select(symbol, date, adjusted)
+
+view(data)
+
+Datee <-data.frame(Dates =rep(seq.Date(from = ymd("2012-01-03"),
+                                                            to =ymd("2022-05-16"),
+                                                            by = "day")),
+                           Symbol = c(rep("TSLA",3787)))
+Final <- Datee %>%
+ left_join(data, by = c("Dates" = "date", "Symbol" = "symbol"))%>%
+  group_by(Symbol)%>%
+ fill(adjusted, .direction = "downup")        
+
+view(Final)
